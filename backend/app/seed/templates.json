@@ -1,0 +1,143 @@
+{
+  "meal_templates": [
+    {
+      "id": "south_indian",
+      "name": "South Indian",
+      "description": "Traditional South Indian meal. Main curry with rice and/or roti, a complementary side dish, eggs, and salad.",
+      "required_components": [
+        {"role": "main_curry", "description": "Primary curry (sambar, avial, molagootal, moru kootan, etc.)"},
+        {"role": "carb", "description": "Rice as the primary carb, with roti available for household members who prefer it."},
+        {"role": "eggs", "description": "5 eggs daily — style rotated (boiled/omelette/scrambled/fried)"},
+        {"role": "salad", "description": "Sliced carrots + cucumbers"}
+      ],
+      "optional_components": [
+        {"role": "side_dish", "description": "Poriyal, mezhukkuvaratty, olan, etc. — complementary dry/semi-dry side"},
+        {"role": "accompaniment", "description": "Thayir pachadi, puli pachadi, thogayal, papadam, pickle"}
+      ],
+      "carb_rules": {
+        "default": "rice",
+        "roti_preferred_member": "roti_always",
+        "optional_curd_rice_side": "optional_toggle"
+      },
+      "roti_rules": {
+        "roti_preferred_member": "always",
+        "extra_rotis_for_high_appetite_member": false,
+        "note": "On South Indian days, rice stays primary and no extra rotis are needed."
+      }
+    },
+    {
+      "id": "north_indian",
+      "name": "North Indian",
+      "description": "North Indian meal — roti-forward. Curry with roti for the household, optional curd rice side, eggs, and salad.",
+      "required_components": [
+        {"role": "curry", "description": "Primary curry (palak paneer, mutter paneer, veg kolhapuri, egg curry, etc.)"},
+        {"role": "carb", "description": "Roti/chapati for the household. Add 5 extra rotis on roti-forward days for the higher-appetite adult."},
+        {"role": "eggs", "description": "5 eggs daily — style rotated. May be part of main dish (egg curry) in which case separate eggs may not be needed."},
+        {"role": "salad", "description": "Sliced carrots + cucumbers"}
+      ],
+      "optional_components": [
+        {"role": "side", "description": "Raita, papad, pickle, or a simple stir-fry"},
+        {"role": "curd_rice_side", "description": "Optional curd rice side when the household wants a lighter rice accompaniment"}
+      ],
+      "carb_rules": {
+        "default": "roti",
+        "roti_preferred_member": "roti_always",
+        "optional_curd_rice_side": "optional_toggle"
+      },
+      "roti_rules": {
+        "roti_preferred_member": "always",
+        "extra_rotis_for_high_appetite_member": true,
+        "extra_count": 5,
+        "note": "On North Indian days, everyone eats roti. Make 5 extra rotis for the higher-appetite adult."
+      }
+    },
+    {
+      "id": "indo_chinese",
+      "name": "Indo-Chinese",
+      "description": "Indo-Chinese meal — a main fried rice/noodle dish with a protein-rich side, eggs (if not in main), and salad.",
+      "required_components": [
+        {"role": "main", "description": "Fried rice, noodles, or similar Indo-Chinese main"},
+        {"role": "side", "description": "Tofu stir-fry, gobi manchurian, paneer stir-fry, or similar protein-rich side"},
+        {"role": "salad", "description": "Sliced carrots + cucumbers"}
+      ],
+      "optional_components": [
+        {"role": "eggs", "description": "If the main doesn't include eggs (e.g., veg fried rice), add separate eggs. If main is egg fried rice, eggs may already be covered."}
+      ],
+      "carb_rules": {
+        "default": "in_main_dish",
+        "roti_preferred_member": "may_skip_or_eat_main",
+        "note": "Some household members may eat the rice/noodle dish directly or want roti on the side."
+      },
+      "roti_rules": {
+        "roti_preferred_member": "optional",
+        "extra_rotis_for_high_appetite_member": false
+      }
+    },
+    {
+      "id": "bengali",
+      "name": "Bengali",
+      "description": "Bengali meal — rich curries with rice and/or roti, eggs, and salad.",
+      "required_components": [
+        {"role": "main_curry", "description": "Bengali main dish (dhokar dalna, cholar dal, etc.)"},
+        {"role": "carb", "description": "Rice as the primary carb for Bengali meals, with roti available for roti-first members."},
+        {"role": "eggs", "description": "5 eggs daily — style rotated"},
+        {"role": "salad", "description": "Sliced carrots + cucumbers"}
+      ],
+      "optional_components": [
+        {"role": "side", "description": "Bhaja (fried vegetable), bori, or a light accompaniment"}
+      ],
+      "carb_rules": {
+        "default": "rice",
+        "roti_preferred_member": "roti_always",
+        "optional_curd_rice_side": "not_typical"
+      },
+      "roti_rules": {
+        "roti_preferred_member": "always",
+        "extra_rotis_for_high_appetite_member": false
+      }
+    },
+    {
+      "id": "comfort",
+      "name": "Comfort / One-Pot",
+      "description": "Comfort meals — one-pot dishes like khichdi, egg curry with rice. Simple and wholesome.",
+      "required_components": [
+        {"role": "main", "description": "One-pot or self-contained dish (dal khichdi, egg curry + rice, etc.)"},
+        {"role": "eggs", "description": "If not part of main, 5 eggs daily — rotated style"},
+        {"role": "salad", "description": "Sliced carrots + cucumbers"}
+      ],
+      "optional_components": [
+        {"role": "side", "description": "Papad, pickle, curd, or a simple stir-fry"}
+      ],
+      "carb_rules": {
+        "default": "in_main_dish",
+        "roti_preferred_member": "roti_optional",
+        "note": "If the main is rice-based, some household members may still want roti on the side."
+      },
+      "roti_rules": {
+        "roti_preferred_member": "optional",
+        "extra_rotis_for_high_appetite_member": false
+      }
+    },
+    {
+      "id": "international",
+      "name": "International (Future)",
+      "description": "International cuisines — miso ramen, Mexican bowls, Thai curries, etc. Post-MVP expansion.",
+      "required_components": [
+        {"role": "main", "description": "International main dish"},
+        {"role": "eggs", "description": "Contextual — may be part of dish or separate"},
+        {"role": "salad", "description": "Contextual — may be part of dish or standard salad"}
+      ],
+      "optional_components": [
+        {"role": "side", "description": "Contextual side dish"}
+      ],
+      "carb_rules": {
+        "default": "dish_dependent",
+        "note": "Depends on the specific dish"
+      },
+      "roti_rules": {
+        "roti_preferred_member": "optional",
+        "extra_rotis_for_high_appetite_member": false
+      }
+    }
+  ]
+}

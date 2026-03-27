@@ -1,0 +1,115 @@
+{
+  "description": "Pantry staples assumed to be always in stock. These are excluded from the delta shopping list unless the user explicitly flags them as 'out of stock'.",
+  "pantry_staples": [
+    {
+      "category": "Everyday Vegetables (Usually Stocked)",
+      "items": [
+        {"name": "Onion", "typical_stock": "1-2 kg"},
+        {"name": "Tomato", "typical_stock": "500g-1 kg"},
+        {"name": "Potato", "typical_stock": "500g-1 kg"},
+        {"name": "Ginger", "typical_stock": "small piece"},
+        {"name": "Garlic", "typical_stock": "1 bulb"},
+        {"name": "Green Chili", "typical_stock": "handful"},
+        {"name": "Curry Leaves", "typical_stock": "1 sprig"},
+        {"name": "Coriander Leaves", "typical_stock": "1 bunch"},
+        {"name": "Lemon", "typical_stock": "2-3"}
+      ]
+    },
+    {
+      "category": "Grains & Flours",
+      "items": [
+        {"name": "Rice", "typical_stock": "always stocked"},
+        {"name": "Atta (wheat flour)", "typical_stock": "always stocked"},
+        {"name": "Rava/Sooji (semolina)", "typical_stock": "1 packet"}
+      ]
+    },
+    {
+      "category": "Dals & Legumes",
+      "items": [
+        {"name": "Toor Dal", "typical_stock": "500g-1 kg"},
+        {"name": "Moong Dal (split)", "typical_stock": "500g"},
+        {"name": "Chana Dal", "typical_stock": "500g"},
+        {"name": "Urad Dal (split)", "typical_stock": "250g"},
+        {"name": "Masoor Dal", "typical_stock": "500g"}
+      ]
+    },
+    {
+      "category": "Spices (Whole)",
+      "items": [
+        {"name": "Coriander Seeds", "typical_stock": "always stocked"},
+        {"name": "Cumin Seeds", "typical_stock": "always stocked"},
+        {"name": "Mustard Seeds", "typical_stock": "always stocked"},
+        {"name": "Fenugreek Seeds (methi)", "typical_stock": "always stocked"},
+        {"name": "Black Peppercorns", "typical_stock": "always stocked"},
+        {"name": "Dry Red Chilies", "typical_stock": "always stocked"},
+        {"name": "Cloves", "typical_stock": "small jar"},
+        {"name": "Cinnamon Sticks", "typical_stock": "small jar"},
+        {"name": "Cardamom", "typical_stock": "small jar"},
+        {"name": "Bay Leaves", "typical_stock": "always stocked"},
+        {"name": "Fennel Seeds", "typical_stock": "always stocked"},
+        {"name": "Sesame Seeds", "typical_stock": "small packet"}
+      ]
+    },
+    {
+      "category": "Spices (Powder)",
+      "items": [
+        {"name": "Turmeric Powder", "typical_stock": "always stocked"},
+        {"name": "Red Chili Powder", "typical_stock": "always stocked"},
+        {"name": "Coriander Powder", "typical_stock": "always stocked"},
+        {"name": "Cumin Powder", "typical_stock": "always stocked"},
+        {"name": "Garam Masala", "typical_stock": "always stocked"},
+        {"name": "Asafoetida (Hing)", "typical_stock": "always stocked"},
+        {"name": "White Pepper", "typical_stock": "small jar"}
+      ]
+    },
+    {
+      "category": "Oils & Fats",
+      "items": [
+        {"name": "Coconut Oil", "typical_stock": "always stocked"},
+        {"name": "Ghee", "typical_stock": "always stocked"},
+        {"name": "Vegetable/Sunflower Oil", "typical_stock": "always stocked"},
+        {"name": "Sesame Oil (Gingelly)", "typical_stock": "small bottle"}
+      ]
+    },
+    {
+      "category": "Dairy & Refrigerated",
+      "items": [
+        {"name": "Curd (Yogurt)", "typical_stock": "daily — set overnight or bought"},
+        {"name": "Milk", "typical_stock": "daily"},
+        {"name": "Butter", "typical_stock": "usually stocked"},
+        {"name": "Cream", "typical_stock": "may need to buy for North Indian dishes"},
+        {"name": "Eggs", "typical_stock": "always stocked (dozen)"}
+      ]
+    },
+    {
+      "category": "Sauces & Condiments",
+      "items": [
+        {"name": "Tamarind", "typical_stock": "always stocked"},
+        {"name": "Jaggery", "typical_stock": "small block"},
+        {"name": "Soy Sauce", "typical_stock": "1 bottle"},
+        {"name": "Vinegar", "typical_stock": "1 bottle"},
+        {"name": "Schezwan Sauce", "typical_stock": "1 bottle"},
+        {"name": "Tomato Ketchup", "typical_stock": "1 bottle"}
+      ]
+    },
+    {
+      "category": "Dry Fruits & Nuts",
+      "items": [
+        {"name": "Cashew Nuts", "typical_stock": "small packet"},
+        {"name": "Grated Coconut (frozen)", "typical_stock": "may need to buy fresh or keep frozen"},
+        {"name": "Poppy Seeds (khus khus)", "typical_stock": "small packet"}
+      ]
+    },
+    {
+      "category": "Other",
+      "items": [
+        {"name": "Salt", "typical_stock": "always stocked"},
+        {"name": "Sugar", "typical_stock": "always stocked"},
+        {"name": "Cornstarch", "typical_stock": "small packet"},
+        {"name": "Papad", "typical_stock": "1 packet"},
+        {"name": "Pickle", "typical_stock": "1 jar"},
+        {"name": "Kasuri Methi (dried fenugreek leaves)", "typical_stock": "small packet"}
+      ]
+    }
+  ]
+}

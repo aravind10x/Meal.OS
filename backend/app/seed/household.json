@@ -1,0 +1,88 @@
+{
+  "household_profile": {
+    "family_name": "Demo Household",
+    "location": "Urban India",
+    "members": [
+      {
+        "name": "Planner One",
+        "age": 39,
+        "role": "primary_user",
+        "dietary_preferences": {
+          "rice": "default_on_south_indian_days",
+          "roti": "on_north_indian_days",
+          "curd_rice": "optional_any_day",
+          "eggs_per_day": 3,
+          "protein_goal": "50-80g from meals"
+        }
+      },
+      {
+        "name": "Planner Two",
+        "age": 35,
+        "role": "primary_user",
+        "dietary_preferences": {
+          "rice": "avoid_default",
+          "roti": "always",
+          "eggs_per_day": 1
+        }
+      },
+      {
+        "name": "Child",
+        "age": 4,
+        "role": "dependent",
+        "dietary_preferences": {
+          "eggs_per_day": 1,
+          "spice_tolerance": "low",
+          "notes": "Needs less spicy food and often prefers mild sides."
+        }
+      }
+    ],
+    "cook": {
+      "name": "Cook",
+      "languages": ["hindi", "bengali"],
+      "literacy": "limited — can access WhatsApp links but may not read text reliably",
+      "arrival_time": "6:00 AM",
+      "cooks_for": "lunch (used for dinner too)",
+      "tenure_months": 1,
+      "familiar_recipes": ["sambar", "beans_poriyal", "cabbage_poriyal", "dal_khichdi"]
+    },
+    "rules": {
+      "roti_daily": true,
+      "eggs_daily": true,
+      "salad_daily": true,
+      "rice_default_off_for_one_adult": true,
+      "salad_items": ["carrots", "cucumbers"],
+      "egg_config": {
+        "total_daily": 5,
+        "distribution": {
+          "adult_1": 3,
+          "adult_2": 1,
+          "child": 1
+        },
+        "styles": ["boiled", "omelette", "scrambled", "fried"],
+        "rotation_rule": "avoid_same_style_2_consecutive_days"
+      },
+      "roti_config": {
+        "base_count": "standard batch for the household",
+        "extra_on_roti_focused_days": 5,
+        "note": "On full-roti days, make 5 extra rotis for the higher-appetite household member"
+      },
+      "repetition_avoidance": {
+        "same_main_dish_gap_days": 3,
+        "same_cuisine_gap_days": 2,
+        "note": "Don't repeat the same main dish within 3 days. Try not to do the same cuisine type 3 days in a row."
+      }
+    },
+    "kid_general_rules": [
+      "Reduce spice level significantly — kid has low spice tolerance",
+      "For sambar/rasam: set aside plain cooked dal before mixing with masala paste",
+      "For eggs: no chili in the kid's omelette or scrambled eggs",
+      "For North Indian curries: keep a portion with less chili powder",
+      "For Indo-Chinese: keep a portion aside before adding chili sauce"
+    ],
+    "grocery": {
+      "primary_platform": ["zepto", "bigbasket"],
+      "ordering_pattern": "currently ad-hoc/daily — goal is to reduce this with better planning",
+      "note": "The plan should catch missing ingredients the night before instead of during the morning cook."
+    }
+  }
+}

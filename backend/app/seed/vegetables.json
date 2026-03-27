@@ -1,0 +1,47 @@
+{
+  "description": "Common vegetables for the vegetable availability selector. Grouped by primary use case.",
+  "vegetables": [
+    {
+      "category": "Poriyal / Stir-fry",
+      "items": [
+        {"name": "French Beans", "aliases": ["beans"], "seasonal": false},
+        {"name": "Cabbage", "aliases": [], "seasonal": false},
+        {"name": "Ivy Gourd", "aliases": ["kovakkai", "tindora", "dondakaya"], "seasonal": true},
+        {"name": "Ladies Finger", "aliases": ["okra", "bhindi", "vendakkai"], "seasonal": false},
+        {"name": "Yardlong Beans", "aliases": ["payar", "achinga payar", "long beans"], "seasonal": true},
+        {"name": "Carrot", "aliases": [], "seasonal": false},
+        {"name": "Beetroot", "aliases": [], "seasonal": false},
+        {"name": "Raw Banana", "aliases": ["vazhakkai", "kachha kela"], "seasonal": false},
+        {"name": "Snake Gourd", "aliases": ["padwal", "pudalangai"], "seasonal": true}
+      ]
+    },
+    {
+      "category": "Curry / Gravy",
+      "items": [
+        {"name": "Drumstick", "aliases": ["moringa", "murungakkai", "sahjan"], "seasonal": true},
+        {"name": "Ash Gourd", "aliases": ["white pumpkin", "elavan", "petha", "kumbalam"], "seasonal": false},
+        {"name": "Amaranthus", "aliases": ["keerai", "rajgira leaves", "thotakura"], "seasonal": true},
+        {"name": "Spinach", "aliases": ["palak"], "seasonal": false},
+        {"name": "Brinjal", "aliases": ["eggplant", "baingan", "kathirikai"], "seasonal": false},
+        {"name": "Peas", "aliases": ["mutter", "green peas"], "seasonal": true},
+        {"name": "Capsicum", "aliases": ["bell pepper", "shimla mirch"], "seasonal": false},
+        {"name": "Cauliflower", "aliases": ["gobi", "phool gobi"], "seasonal": false}
+      ]
+    },
+    {
+      "category": "Protein / Dairy",
+      "items": [
+        {"name": "Paneer", "aliases": ["cottage cheese"], "seasonal": false},
+        {"name": "Tofu", "aliases": ["soy paneer"], "seasonal": false}
+      ]
+    },
+    {
+      "category": "Other",
+      "items": [
+        {"name": "Cucumber", "aliases": ["kheera", "vellarikka"], "seasonal": false},
+        {"name": "Coconut", "aliases": ["naariyal", "thenga"], "seasonal": false},
+        {"name": "Spring Onion", "aliases": ["hari pyaaz", "scallion"], "seasonal": false}
+      ]
+    }
+  ]
+}
