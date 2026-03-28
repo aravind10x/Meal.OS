@@ -15,11 +15,21 @@ It turns a 60-second nightly check-in into tomorrow's cooking plan:
   <img src="docs/assets/meal-os-home.png" alt="Meal.OS home dashboard" width="100%" />
 </p>
 
-<p align="center">
-  <img src="docs/assets/meal-os-plans.png" alt="Meal.OS plan comparison" width="32%" />
-  <img src="docs/assets/meal-os-brief.png" alt="Meal.OS cook brief artifact" width="32%" />
-  <img src="docs/assets/meal-os-checkin.png" alt="Meal.OS nightly check-in flow" width="32%" />
-</p>
+<table align="center">
+  <tr>
+    <td width="38%" valign="top">
+      <img src="docs/assets/meal-os-checkin.png" alt="Meal.OS nightly check-in flow" width="100%" />
+    </td>
+    <td width="62%" rowspan="2" valign="top">
+      <img src="docs/assets/meal-os-brief.png" alt="Meal.OS cook brief artifact" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="38%" valign="top">
+      <img src="docs/assets/meal-os-plans.png" alt="Meal.OS plan comparison" width="100%" />
+    </td>
+  </tr>
+</table>
 
 ## Why it feels different
 
