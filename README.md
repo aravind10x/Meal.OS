@@ -134,7 +134,3 @@ Backend:
 cd backend
 pytest -v
 ```
-
-## Status
-
-Meal.OS is an active hackathon prototype and public demo repo for an AI household meal operating system.
