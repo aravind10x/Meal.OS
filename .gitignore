@@ -28,7 +28,9 @@ backend/audio_files/
 
 # SQLite database
 *.db
+*.db_*
 *.sqlite3
+*.sqlite3_*
 
 # pytest
 .pytest_cache/

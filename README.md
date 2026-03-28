@@ -80,7 +80,9 @@ The frontend expects the API at `http://localhost:8000` by default.
 
 ## Demo Data
 
-To load a public-safe demo state that matches the best product flow:
+On a clean database, the dashboard starts with the nightly check-in flow.
+If you want a populated demo state for screenshots or a guided walkthrough,
+load the public-safe demo seed:
 
 ```bash
 cd backend
@@ -93,6 +95,9 @@ This seeds:
 - three comparison plans for the following day
 - recent meal history
 - and vegetable snapshots for the planner
+
+To reset back to a clean first-run state locally, delete `backend/meal_os.db`
+and restart the backend.
 
 ## Environment Variables
 

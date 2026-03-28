@@ -6,7 +6,9 @@
  */
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import PlansPage from "@/app/plans/page";
+import { server, MOCK_APPROVED_PLAN } from "@/__tests__/mocks/handlers";
 
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -24,13 +26,10 @@ vi.mock("next/link", () => ({
 }));
 
 describe("PlansPage", () => {
-  it("should display the 'Choose a Plan' title after loading", async () => {
+  it("should display the 'Plans' title after loading", async () => {
     render(<PlansPage />);
     await waitFor(() => {
-      expect(screen.getByText("Choose a Plan")).toBeInTheDocument();
-      expect(
-        screen.getByText(/AI-generated strategies for tomorrow/)
-      ).toBeInTheDocument();
+      expect(screen.getByText("Plans")).toBeInTheDocument();
     });
   });
 
@@ -40,6 +39,40 @@ describe("PlansPage", () => {
       expect(screen.getByText("Option 1")).toBeInTheDocument();
       expect(screen.getByText("Option 2")).toBeInTheDocument();
       expect(screen.getByText("Option 3")).toBeInTheDocument();
+    });
+  });
+
+  it("should prefer draft candidates over an older approved plan for the same date", async () => {
+    server.use(
+      http.get("http://localhost:8000/api/planner/approved", () => {
+        return HttpResponse.json(MOCK_APPROVED_PLAN);
+      })
+    );
+
+    render(<PlansPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Plans")).toBeInTheDocument();
+      expect(screen.getByText("Option 1")).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText("Approved")).not.toBeInTheDocument();
+  });
+
+  it("should allow option card copy to wrap inside the tab trigger", async () => {
+    render(<PlansPage />);
+    await waitFor(() => {
+      expect(screen.getAllByRole("tab")[0]).toHaveClass("whitespace-normal");
+    });
+  });
+
+  it("should let the plan tablist grow to the height of the option cards", async () => {
+    render(<PlansPage />);
+    await waitFor(() => {
+      expect(screen.getByRole("tablist")).toHaveClass(
+        "group-data-[orientation=horizontal]/tabs:h-auto"
+      );
+      expect(screen.getByRole("tablist")).toHaveClass("items-stretch");
     });
   });
 
@@ -61,7 +94,6 @@ describe("PlansPage", () => {
   it("should display the plan rationale", async () => {
     render(<PlansPage />);
     await waitFor(() => {
-      expect(screen.getByText("Why this plan works")).toBeInTheDocument();
       expect(
         screen.getAllByText(
           /Classic South Indian meal, uses available beans and drumstick/
@@ -87,11 +119,11 @@ describe("PlansPage", () => {
     fireEvent.click(screen.getByText("Approve This Plan"));
 
     await waitFor(() => {
-      expect(screen.getByText("Plan Approved")).toBeInTheDocument();
+      expect(screen.getByText("Approved")).toBeInTheDocument();
     });
   });
 
-  it("should show 'View Cook Brief' button after approval", async () => {
+  it("should show 'Open Cook Brief' button after approval", async () => {
     render(<PlansPage />);
 
     await waitFor(() => {
@@ -99,11 +131,11 @@ describe("PlansPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("View Cook Brief")).toBeInTheDocument();
+      expect(screen.getByText("Open Cook Brief")).toBeInTheDocument();
     });
   });
 
-  it("should show 'Shopping List' button after approval", async () => {
+  it("should show 'Shopping' button after approval", async () => {
     render(<PlansPage />);
 
     await waitFor(() => {
@@ -111,7 +143,7 @@ describe("PlansPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Shopping List")).toBeInTheDocument();
+      expect(screen.getByText("Shopping")).toBeInTheDocument();
     });
   });
 

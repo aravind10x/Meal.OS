@@ -99,19 +99,21 @@ export default function PlansPage() {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        // First check if there's already an approved plan for this date
+        // Prefer fresh draft candidates when they exist for this date.
+        const data = await api.planner.candidates(dateParam ?? undefined);
+        if (data.length > 0) {
+          setPlans(data);
+          setApprovedPlan(null);
+          return;
+        }
+
+        // Fall back to the approved plan when there are no drafts to review.
         if (dateParam) {
           const approved = await api.planner.approved(dateParam);
           if (approved) {
             setApprovedPlan(approved);
-            setLoading(false);
-            return;
           }
         }
-
-        // Otherwise load draft candidates
-        const data = await api.planner.candidates(dateParam ?? undefined);
-        setPlans(data);
       } catch {
         toast.error("Failed to load meal plans");
       } finally {
@@ -207,7 +209,7 @@ export default function PlansPage() {
     return (
       <div className="min-h-screen pb-20">
         <div className="mx-auto max-w-6xl px-4 pt-6 md:px-6 lg:px-8">
-          <PageHeader title="Meal Plans" />
+          <PageHeader title="Plans" />
           <div className="flex items-center justify-center p-12">
             <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
           </div>
@@ -223,41 +225,57 @@ export default function PlansPage() {
       <div className="min-h-screen pb-20">
         <div className="mx-auto max-w-6xl px-4 pt-6 md:px-6 lg:px-8">
           <PageHeader
-            title="Plan Approved"
+            title="Plans"
             subtitle={formatDate(approvedPlan.plan_date)}
           />
 
-          <Card className="p-4 bg-emerald-50 border-emerald-200 mb-4">
-            <div className="flex items-center gap-2 text-emerald-700 mb-2">
-              <Check className="h-5 w-5" />
-              <span className="font-semibold">
-                {approvedPlan.cuisine} plan approved!
-              </span>
+          <section className="rounded-[1.8rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(247,246,241,0.88))] p-5 shadow-[0_16px_40px_rgba(24,38,37,0.05)]">
+            <div className="flex items-center gap-2 text-emerald-700">
+              <Check className="h-4 w-4" />
+              <span className="text-sm font-medium">Approved</span>
             </div>
-            <PlanSummary plan={approvedPlan} />
-          </Card>
+            <div className="mt-4 rounded-[1.4rem] border border-emerald-200 bg-emerald-50/80 p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  className={
+                    CUISINE_COLORS[approvedPlan.template_id] ||
+                    "bg-zinc-100 text-zinc-800"
+                  }
+                >
+                  {CUISINE_LABELS[approvedPlan.template_id] ||
+                    approvedPlan.cuisine}
+                </Badge>
+                <span className="text-xs text-emerald-700/80">
+                  {approvedPlan.dishes.length} dishes
+                </span>
+              </div>
+              <div className="mt-4">
+                <PlanSummary plan={approvedPlan} />
+              </div>
+            </div>
 
-          <div className="space-y-3">
-            <Button
-              className="w-full rounded-xl h-12 gap-2"
-              onClick={() =>
-                router.push(`/brief/${approvedPlan.id}`)
-              }
-            >
-              <ChefHat className="h-4 w-4" />
-              View Cook Brief
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full rounded-xl gap-2"
-              onClick={() =>
-                router.push(`/shopping/${approvedPlan.id}`)
-              }
-            >
-              <ShoppingCart className="h-4 w-4" />
-              Shopping List
-            </Button>
-          </div>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Button
+                className="h-12 rounded-xl gap-2 sm:w-auto"
+                onClick={() =>
+                  router.push(`/brief/${approvedPlan.id}`)
+                }
+              >
+                <ChefHat className="h-4 w-4" />
+                Open Cook Brief
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-xl gap-2 sm:w-auto"
+                onClick={() =>
+                  router.push(`/shopping/${approvedPlan.id}`)
+                }
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Shopping
+              </Button>
+            </div>
+          </section>
         </div>
         <NavBar />
       </div>
@@ -269,18 +287,15 @@ export default function PlansPage() {
     return (
       <div className="min-h-screen pb-20">
         <div className="mx-auto max-w-6xl px-4 pt-6 md:px-6 lg:px-8">
-          <PageHeader title="Meal Plans" />
+          <PageHeader title="Plans" />
           <Card className="p-8 text-center">
             <Sparkles className="h-10 w-10 text-zinc-300 mx-auto mb-3" />
-            <h3 className="font-semibold text-zinc-600 mb-1">
-              No plans generated yet
-            </h3>
             <p className="text-sm text-zinc-400 mb-4">
-              Start by doing your nightly check-in to generate meal plans.
+              Start with check-in to generate plan options.
             </p>
             <Button onClick={() => router.push("/checkin")} className="gap-2">
               <UtensilsCrossed className="h-4 w-4" />
-              Go to Check-in
+              Open Check-in
             </Button>
           </Card>
         </div>
@@ -294,22 +309,12 @@ export default function PlansPage() {
     <div className="min-h-screen pb-20">
       <div className="mx-auto max-w-6xl px-4 pt-6 md:px-6 lg:px-8">
         <PageHeader
-          title="Choose a Plan"
+          title="Plans"
           subtitle={dateParam ? formatDate(dateParam) : "Tomorrow"}
         />
 
-        <div className="mb-4 rounded-[1.8rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,244,239,0.72))] p-4 shadow-[0_16px_40px_rgba(24,38,37,0.05)]">
-          <p className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-muted-foreground">
-            Plan comparison
-          </p>
-          <p className="mt-2 text-sm leading-6 text-zinc-600">
-            AI-generated strategies for tomorrow. Choose the one you want the
-            household and cook to execute.
-          </p>
-        </div>
-
         <Tabs defaultValue={`plan-${plans[0]?.id}`} className="w-full">
-          <TabsList className="mb-4 grid h-auto w-full gap-2 bg-transparent p-0 md:grid-cols-3">
+          <TabsList className="mb-4 grid h-auto w-full items-stretch gap-2 bg-transparent p-0 group-data-[orientation=horizontal]/tabs:h-auto md:grid-cols-3">
             {plans.map((plan, i) => {
               const missingIngredients = getMissingIngredients(plan);
               const hasViolations = plan.validation && !plan.validation.is_valid;
@@ -318,7 +323,7 @@ export default function PlansPage() {
                 <TabsTrigger
                   key={plan.id}
                   value={`plan-${plan.id}`}
-                  className="h-auto rounded-[1.5rem] border border-white/70 bg-white/70 px-4 py-4 text-left data-[state=active]:border-primary/30 data-[state=active]:bg-white data-[state=active]:shadow-[0_14px_34px_rgba(24,38,37,0.08)]"
+                  className="h-auto min-w-0 items-start justify-start whitespace-normal rounded-[1.5rem] border border-white/70 bg-white/70 px-4 py-4 text-left data-[state=active]:border-primary/30 data-[state=active]:bg-white data-[state=active]:shadow-[0_14px_34px_rgba(24,38,37,0.08)]"
                 >
                   <div className="w-full">
                     <div className="flex items-center justify-between gap-2">
@@ -378,14 +383,9 @@ export default function PlansPage() {
                       </span>
                     </div>
 
-                    <div className="mt-4 rounded-[1.4rem] bg-[rgba(244,244,239,0.78)] p-4">
-                      <p className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-muted-foreground">
-                        Why this plan works
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        &ldquo;{plan.rationale}&rdquo;
-                      </p>
-                    </div>
+                    <p className="mt-4 text-sm leading-6 text-zinc-600">
+                      {plan.rationale}
+                    </p>
 
                     <div className="mt-5 space-y-2">
                       {plan.dishes.map((dish) => (
@@ -461,10 +461,7 @@ export default function PlansPage() {
                   </Card>
 
                   <Card className="h-fit p-5">
-                    <p className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-muted-foreground">
-                      Plan snapshot
-                    </p>
-                    <div className="mt-4 space-y-3">
+                    <div className="space-y-3">
                       <PlanSnapshotRow
                         label="Cuisine"
                         value={CUISINE_LABELS[plan.template_id] || plan.cuisine}

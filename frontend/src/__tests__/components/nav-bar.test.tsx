@@ -26,7 +26,7 @@ describe("NavBar", () => {
 
   it("should render all navigation items", () => {
     render(<NavBar />);
-    expect(screen.getAllByText("Home").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Dashboard").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Recipes").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Plan").length).toBeGreaterThan(0);
     expect(screen.getAllByText("History").length).toBeGreaterThan(0);
@@ -37,15 +37,16 @@ describe("NavBar", () => {
     const links = screen.getAllByRole("link");
     const hrefs = links.map((link) => link.getAttribute("href"));
     expect(hrefs).toContain("/");
+    expect(hrefs).toContain("/home");
     expect(hrefs).toContain("/recipes");
     expect(hrefs).toContain("/checkin");
     expect(hrefs).toContain("/history");
   });
 
-  it("should preserve the 4 unique navigation destinations", () => {
+  it("should preserve the 5 unique navigation destinations including the landing-page brand link", () => {
     render(<NavBar />);
     const links = screen.getAllByRole("link");
     const uniqueHrefs = [...new Set(links.map((link) => link.getAttribute("href")))];
-    expect(uniqueHrefs).toHaveLength(4);
+    expect(uniqueHrefs).toHaveLength(5);
   });
 });
