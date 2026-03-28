@@ -192,8 +192,12 @@ export default function CheckinPage() {
       });
       toast.success(`${plans.length} meal plans generated!`);
       router.push(`/plans?date=${tomorrow}`);
-    } catch {
-      toast.error("Failed to generate plans. Please try again.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error && error.message
+          ? error.message
+          : "Failed to generate plans. Please try again."
+      );
     } finally {
       setGenerating(false);
     }
@@ -203,38 +207,14 @@ export default function CheckinPage() {
     <div className="min-h-screen pb-20">
       <div className="mx-auto max-w-lg px-4 pt-6">
         <PageHeader
-          title="Plan Tomorrow"
+          title="Check-in"
           subtitle={formatDate(tomorrow)}
         />
-
-        <Card className="mb-6 rounded-[1.8rem] border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,244,239,0.72))] p-4 shadow-[0_16px_40px_rgba(24,38,37,0.05)]">
-          <p className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-muted-foreground">
-            Nightly check-in
-          </p>
-          <p className="mt-2 text-sm leading-6 text-zinc-600">
-            Capture just enough context for Meal.OS to plan tomorrow well:
-            leftovers, what&apos;s in the kitchen, and what should get used
-            first.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs">
-            <Badge variant="secondary" className="rounded-full px-3 py-1">
-              {leftovers.filter((item) => item.dish_name.trim()).length} leftovers
-            </Badge>
-            <Badge variant="secondary" className="rounded-full px-3 py-1">
-              {selectedVegs.length} vegetables selected
-            </Badge>
-            <Badge variant="secondary" className="rounded-full px-3 py-1">
-              {useSoonVegs.length} marked use soon
-            </Badge>
-          </div>
-        </Card>
 
         {/* Step 1: Leftovers */}
         <section className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-zinc-900">
-              🍲 Leftovers from today
-            </h2>
+            <h2 className="font-semibold text-zinc-900">Leftovers</h2>
             <div className="flex gap-1.5">
               {leftovers.length > 0 && (
                 <Button
@@ -243,7 +223,7 @@ export default function CheckinPage() {
                   onClick={handleNoLeftovers}
                   className="text-xs text-zinc-500"
                 >
-                  No leftovers
+                  Clear
                 </Button>
               )}
               <Button
@@ -259,7 +239,7 @@ export default function CheckinPage() {
 
           {leftovers.length === 0 ? (
             <Card className="p-4 text-center text-sm text-zinc-400">
-              No leftovers — great! Tap &quot;Add&quot; if there are any.
+              No leftovers added.
             </Card>
           ) : (
             <div className="space-y-3">
@@ -317,9 +297,7 @@ export default function CheckinPage() {
         {/* Step 2: Vegetable selection */}
         <section className="mb-6">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="font-semibold text-zinc-900">
-              🥬 Vegetables available tomorrow
-            </h2>
+            <h2 className="font-semibold text-zinc-900">Vegetables</h2>
             {hasPreviousCheckin && (
               <Button
                 variant="outline"
@@ -328,13 +306,13 @@ export default function CheckinPage() {
                 className="text-xs gap-1"
               >
                 <Check className="h-3 w-3" />
-                Same as last time
+                Use last check-in
               </Button>
             )}
           </div>
           <p className="text-xs text-zinc-500 mb-3 leading-5">
-            Tap once to include. Tap again to mark &quot;use soon&quot;. Tap a
-            third time to clear.
+            Tap to include. Tap again for &quot;use soon&quot;. Tap again to
+            clear.
           </p>
 
           {loadingVegs ? (
@@ -430,7 +408,7 @@ export default function CheckinPage() {
               <Card className="p-3 bg-emerald-50 border-emerald-200">
                 <div className="flex items-center gap-2 text-emerald-700 text-sm">
                   <Check className="h-4 w-4" />
-                  Check-in saved for {formatDate(tomorrow)}
+                  Saved for {formatDate(tomorrow)}
                 </div>
               </Card>
               <Button
@@ -443,7 +421,7 @@ export default function CheckinPage() {
                 ) : (
                   <Sparkles className="h-4 w-4" />
                 )}
-                Generate Meal Plans
+                Generate Plans
               </Button>
               <Button
                 variant="outline"

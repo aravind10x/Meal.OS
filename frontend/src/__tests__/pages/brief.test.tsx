@@ -46,6 +46,17 @@ describe("CookBriefPage", () => {
     });
   });
 
+  it("uses a wider desktop layout without splitting the brief into columns", async () => {
+    const { container } = render(<CookBriefPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/TODAY'S MENU/)).toBeInTheDocument();
+    });
+
+    expect(container.querySelector(".max-w-4xl")).not.toBeNull();
+    expect(container.querySelector(".lg\\:grid-cols-2")).toBeNull();
+  });
+
   it("should display dish names in the brief", async () => {
     render(<CookBriefPage />);
     await waitFor(() => {

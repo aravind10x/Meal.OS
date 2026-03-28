@@ -3,15 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  UtensilsCrossed,
   BookOpen,
   CalendarDays,
   ClipboardList,
+  LayoutDashboard,
+  UtensilsCrossed,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home", icon: UtensilsCrossed },
+  { href: "/home", label: "Dashboard", icon: LayoutDashboard },
   { href: "/recipes", label: "Recipes", icon: BookOpen },
   { href: "/checkin", label: "Plan", icon: CalendarDays },
   { href: "/history", label: "History", icon: ClipboardList },
@@ -27,7 +28,7 @@ export function NavBar() {
     >
       <div className="mx-auto max-w-6xl">
         <div className="hidden items-center justify-between rounded-[1.75rem] border border-white/70 bg-white/78 px-3 py-3 shadow-[0_18px_50px_rgba(24,38,37,0.08)] backdrop-blur-xl md:flex">
-          <div className="flex items-center gap-3 pl-1">
+          <Link href="/" className="flex items-center gap-3 pl-1">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
               <UtensilsCrossed className="h-5 w-5" />
             </div>
@@ -39,7 +40,7 @@ export function NavBar() {
                 Household meal system
               </p>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-1">
             {NAV_ITEMS.map((item) => {

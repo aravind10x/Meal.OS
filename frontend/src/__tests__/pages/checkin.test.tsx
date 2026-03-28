@@ -5,7 +5,20 @@
  */
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import CheckinPage from "@/app/checkin/page";
+import { server } from "@/__tests__/mocks/handlers";
+
+const { mockToastSuccess, mockToastError } = vi.hoisted(() => ({
+  mockToastSuccess: vi.fn(),
+  mockToastError: vi.fn(),
+}));
+vi.mock("sonner", () => ({
+  toast: {
+    success: mockToastSuccess,
+    error: mockToastError,
+  },
+}));
 
 // Mock Next.js dependencies
 const mockPush = vi.fn();
@@ -21,23 +34,23 @@ vi.mock("next/link", () => ({
 }));
 
 describe("CheckinPage", () => {
-  it("should display the 'Plan Tomorrow' title", () => {
+  it("should display the 'Check-in' title", () => {
     render(<CheckinPage />);
-    expect(screen.getByText("Plan Tomorrow")).toBeInTheDocument();
+    expect(screen.getByText("Check-in")).toBeInTheDocument();
   });
 
   it("should display the leftovers section", () => {
     render(<CheckinPage />);
-    expect(screen.getByText(/Leftovers from today/)).toBeInTheDocument();
+    expect(screen.getByText("Leftovers")).toBeInTheDocument();
   });
 
   it("should display the vegetables section", async () => {
     render(<CheckinPage />);
     await waitFor(() => {
-      expect(screen.getByText(/Vegetables available tomorrow/)).toBeInTheDocument();
+      expect(screen.getByText("Vegetables")).toBeInTheDocument();
       expect(
         screen.getByText(
-          /Tap once to include. Tap again to mark "use soon". Tap a third time to clear./
+          /Tap to include. Tap again for "use soon". Tap again to clear./
         )
       ).toBeInTheDocument();
     });
@@ -88,39 +101,68 @@ describe("CheckinPage", () => {
     fireEvent.click(saveBtn);
 
     await waitFor(() => {
-      expect(screen.getByText("Generate Meal Plans")).toBeInTheDocument();
+      expect(screen.getByText("Generate Plans")).toBeInTheDocument();
+    });
+  });
+
+  it("should show backend planner configuration errors in the toast", async () => {
+    server.use(
+      http.post("http://localhost:8000/api/planner/generate", () =>
+        HttpResponse.json(
+          {
+            detail:
+              "Planner is not configured. Set AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY, and AZURE_OPENAI_DEPLOYMENT_NAME in backend/.env or your shell environment.",
+          },
+          { status: 503 }
+        )
+      )
+    );
+
+    render(<CheckinPage />);
+
+    fireEvent.click(screen.getByText("Save Check-in"));
+    await waitFor(() => {
+      expect(screen.getByText("Generate Plans")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText("Generate Plans"));
+
+    await waitFor(() => {
+      expect(mockToastError).toHaveBeenCalledWith(
+        expect.stringContaining("Planner is not configured")
+      );
     });
   });
 
   // --- "Same as yesterday" shortcut ---
 
-  it("should display 'Same as last time' button when previous check-in exists and no vegs selected", async () => {
+  it("should display 'Use last check-in' button when previous check-in exists and no vegs selected", async () => {
     render(<CheckinPage />);
     await waitFor(() => {
       // The mock latest check-in has vegetables, so the button should appear
-      expect(screen.getByText("Same as last time")).toBeInTheDocument();
+      expect(screen.getByText("Use last check-in")).toBeInTheDocument();
     });
   });
 
   // --- "No leftovers" shortcut ---
 
-  it("should show 'No leftovers' button when leftovers exist", async () => {
+  it("should show 'Clear' button when leftovers exist", async () => {
     render(<CheckinPage />);
     // Add a leftover first
     fireEvent.click(screen.getByText("Add"));
-    expect(screen.getByText("No leftovers")).toBeInTheDocument();
+    expect(screen.getByText("Clear")).toBeInTheDocument();
   });
 
-  it("should clear leftovers when 'No leftovers' is clicked", async () => {
+  it("should clear leftovers when 'Clear' is clicked", async () => {
     render(<CheckinPage />);
     // Add a leftover
     fireEvent.click(screen.getByText("Add"));
     expect(screen.getByPlaceholderText(/Dish name/)).toBeInTheDocument();
 
-    // Click "No leftovers"
-    fireEvent.click(screen.getByText("No leftovers"));
+    // Click "Clear"
+    fireEvent.click(screen.getByText("Clear"));
 
-    // Leftover input should be gone, back to "No leftovers — great!" message
-    expect(screen.getByText(/No leftovers/)).toBeInTheDocument();
+    // Leftover input should be gone, back to the empty state message
+    expect(screen.getByText("No leftovers added.")).toBeInTheDocument();
   });
 });

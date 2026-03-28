@@ -1,13 +1,12 @@
 /**
- * Tests for the Home page.
+ * Tests for the landing page.
  *
- * Verifies: Meal.OS branding baseline, product-story framing, and preview surfaces.
+ * Verifies: Meal.OS public framing, single-CTA hero, and artifact-led proof.
  */
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import HomePage from "@/app/page";
 
-// Mock Next.js dependencies
 vi.mock("next/link", () => ({
   default: ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
@@ -20,15 +19,9 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("HomePage", () => {
-  it("should display the Meal.OS title", () => {
+  it("shows the public Meal.OS promise", () => {
     render(<HomePage />);
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Meal.OS" })
-    ).toBeInTheDocument();
-  });
-
-  it("should display the public product framing", () => {
-    render(<HomePage />);
+    expect(screen.getByRole("heading", { level: 1, name: "Meal.OS" })).toBeInTheDocument();
     expect(
       screen.getByText(
         "Tonight's 60-second check-in becomes tomorrow's cooking plan."
@@ -36,17 +29,19 @@ describe("HomePage", () => {
     ).toBeInTheDocument();
   });
 
-  it("should have a 'Plan Tomorrow's Meals' CTA", () => {
+  it("keeps one primary planning CTA in the hero", () => {
     render(<HomePage />);
     expect(screen.getByText("Plan Tomorrow's Meals")).toBeInTheDocument();
+    expect(screen.queryByText("Browse the recipe library")).not.toBeInTheDocument();
   });
 
-  it("should have a 'Recipe Library' CTA", () => {
+  it("does not show the dashboard approval surface on the landing page", () => {
     render(<HomePage />);
-    expect(screen.getByText("Recipe Library")).toBeInTheDocument();
+    expect(screen.queryByText("Tomorrow's plan is approved")).not.toBeInTheDocument();
+    expect(screen.queryByText("Tomorrow Morning")).not.toBeInTheDocument();
   });
 
-  it("should show the product output preview section", () => {
+  it("shows the product output preview section", () => {
     render(<HomePage />);
     expect(screen.getByText("What Meal.OS Produces")).toBeInTheDocument();
     expect(screen.getByText("Plan Options")).toBeInTheDocument();
@@ -54,7 +49,7 @@ describe("HomePage", () => {
     expect(screen.getByText("Shopping Delta")).toBeInTheDocument();
   });
 
-  it("should show the workflow explainer section", () => {
+  it("shows the workflow explainer section", () => {
     render(<HomePage />);
     expect(screen.getByText("How The Household Runs Tomorrow")).toBeInTheDocument();
     expect(screen.getByText("Nightly check-in")).toBeInTheDocument();
@@ -62,23 +57,17 @@ describe("HomePage", () => {
     expect(screen.getByText("Cook handoff")).toBeInTheDocument();
   });
 
-  it("should link to the recipes page", () => {
+  it("shows a screenshot-style artifact preview section", () => {
     render(<HomePage />);
-    const links = screen.getAllByRole("link");
-    const hrefs = links.map((l) => l.getAttribute("href"));
-    expect(hrefs).toContain("/recipes");
+    expect(screen.getByText("Inside Meal.OS")).toBeInTheDocument();
+    expect(screen.getByText("Plan comparison preview")).toBeInTheDocument();
   });
 
-  it("should link to the checkin page", () => {
+  it("links to the planning and dashboard routes", () => {
     render(<HomePage />);
     const links = screen.getAllByRole("link");
-    const hrefs = links.map((l) => l.getAttribute("href"));
+    const hrefs = links.map((link) => link.getAttribute("href"));
     expect(hrefs).toContain("/checkin");
-  });
-
-  it("should show the system status panel", () => {
-    render(<HomePage />);
-    expect(screen.getByText("Tomorrow Morning")).toBeInTheDocument();
-    expect(screen.getByText("Cook-ready outputs")).toBeInTheDocument();
+    expect(hrefs).toContain("/home");
   });
 });

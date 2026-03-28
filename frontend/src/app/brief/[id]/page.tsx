@@ -215,7 +215,7 @@ export default function CookBriefPage() {
   if (error) {
     return (
       <div className="min-h-screen pb-20">
-        <div className="mx-auto max-w-lg px-4 pt-6">
+        <div className="mx-auto max-w-4xl px-4 pt-6 md:px-6 lg:px-8">
           <PageHeader title="Cook Brief" subtitle="Error" />
           <Card className="p-6 text-center">
             <p className="text-sm text-red-600">{error}</p>
@@ -235,7 +235,7 @@ export default function CookBriefPage() {
 
   return (
     <div className="min-h-screen pb-20">
-      <div className="mx-auto max-w-lg px-4 pt-6">
+      <div className="mx-auto max-w-4xl px-4 pt-6 md:px-6 lg:px-8 xl:max-w-5xl">
         <PageHeader
           title="Cook Brief"
           subtitle="Share-ready handoff"
@@ -305,133 +305,127 @@ export default function CookBriefPage() {
               )}
             </Card>
 
-            {/* Voice Note Section */}
             <Card className="mb-4 rounded-[1.8rem] border-white/70 p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <Volume2 className="h-5 w-5 text-emerald-600" />
-                <div>
-                  <h2 className="font-semibold text-zinc-900">
-                    Hindi Voice Note
-                  </h2>
-                  <p className="text-sm text-zinc-500">
-                    Structured for WhatsApp or voice
-                  </p>
+                <div className="mb-3 flex items-center gap-2">
+                  <Volume2 className="h-5 w-5 text-emerald-600" />
+                  <div>
+                    <h2 className="font-semibold text-zinc-900">
+                      Hindi Voice Note
+                    </h2>
+                    <p className="text-sm text-zinc-500">
+                      Structured for WhatsApp or voice
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {!voiceData && !voiceLoading && (
-                <Button
-                  className="w-full rounded-xl gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
-                  onClick={handleGenerateVoice}
-                >
-                  <Mic className="h-4 w-4" />
-                  Generate Voice Note
-                </Button>
-              )}
-
-              {voiceLoading && (
-                <div className="flex items-center justify-center gap-3 py-6">
-                  <Loader2 className="h-5 w-5 animate-spin text-emerald-500" />
-                  <span className="text-sm text-zinc-500">
-                    Generating Hindi voice note...
-                  </span>
-                </div>
-              )}
-
-              {voiceData && (
-                <div className="space-y-3">
-                  {/* Audio Player */}
-                  {voiceData.audio_url && (
-                    <>
-                      <audio
-                        ref={audioRef}
-                        src={`${API_BASE}${voiceData.audio_url}`}
-                        onEnded={handleAudioEnded}
-                        preload="auto"
-                      />
-                      <div className="flex items-center gap-2 bg-emerald-50 rounded-xl p-3">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-10 w-10 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 flex-shrink-0"
-                          onClick={togglePlayPause}
-                        >
-                          {isPlaying ? (
-                            <Pause className="h-5 w-5" />
-                          ) : (
-                            <Play className="h-5 w-5 ml-0.5" />
-                          )}
-                        </Button>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-emerald-800">
-                            Cook Brief Voice Note
-                          </p>
-                          <p className="text-xs text-emerald-600">
-                            Hindi • Listen before sending
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant="outline"
-                          className="rounded-xl gap-2"
-                          onClick={handleDownload}
-                        >
-                          <Download className="h-4 w-4" />
-                          Download
-                        </Button>
-                        <Button
-                          className="rounded-xl gap-2 bg-green-600 hover:bg-green-700 text-white"
-                          onClick={handleShare}
-                        >
-                          <Share2 className="h-4 w-4" />
-                          Share WhatsApp
-                        </Button>
-                      </div>
-                    </>
-                  )}
-
-                  {/* TTS Error Fallback */}
-                  {voiceData.tts_error && !voiceData.audio_url && (
-                    <div className="bg-amber-50 rounded-lg p-3 text-sm text-amber-800">
-                      ⚠️ {voiceData.tts_error}
-                    </div>
-                  )}
-
-                  {/* Hindi Script Text (collapsible) */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
-                    onClick={() => setScriptExpanded(!scriptExpanded)}
+                {!voiceData && !voiceLoading && (
+                  <Button
+                    className="w-full gap-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700"
+                    onClick={handleGenerateVoice}
                   >
-                    {scriptExpanded ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                    {scriptExpanded
-                      ? "Hide Hindi script"
-                      : "Show Hindi script (for manual recording)"}
-                  </button>
+                    <Mic className="h-4 w-4" />
+                    Generate Voice Note
+                  </Button>
+                )}
 
-                  {scriptExpanded && voiceData.script_text && (
-                    <div className="bg-zinc-50 rounded-lg p-4">
-                      <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-wrap">
-                        {voiceData.script_text}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
+                {voiceLoading && (
+                  <div className="flex items-center justify-center gap-3 py-6">
+                    <Loader2 className="h-5 w-5 animate-spin text-emerald-500" />
+                    <span className="text-sm text-zinc-500">
+                      Generating Hindi voice note...
+                    </span>
+                  </div>
+                )}
+
+                {voiceData && (
+                  <div className="space-y-3">
+                    {voiceData.audio_url && (
+                      <>
+                        <audio
+                          ref={audioRef}
+                          src={`${API_BASE}${voiceData.audio_url}`}
+                          onEnded={handleAudioEnded}
+                          preload="auto"
+                        />
+                        <div className="flex items-center gap-2 rounded-xl bg-emerald-50 p-3">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10 shrink-0 rounded-full bg-emerald-600 text-white hover:bg-emerald-700"
+                            onClick={togglePlayPause}
+                          >
+                            {isPlaying ? (
+                              <Pause className="h-5 w-5" />
+                            ) : (
+                              <Play className="ml-0.5 h-5 w-5" />
+                            )}
+                          </Button>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-emerald-800">
+                              Cook Brief Voice Note
+                            </p>
+                            <p className="text-xs text-emerald-600">
+                              Hindi • Listen before sending
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            variant="outline"
+                            className="gap-2 rounded-xl"
+                            onClick={handleDownload}
+                          >
+                            <Download className="h-4 w-4" />
+                            Download
+                          </Button>
+                          <Button
+                            className="gap-2 rounded-xl bg-green-600 text-white hover:bg-green-700"
+                            onClick={handleShare}
+                          >
+                            <Share2 className="h-4 w-4" />
+                            Share WhatsApp
+                          </Button>
+                        </div>
+                      </>
+                    )}
+
+                    {voiceData.tts_error && !voiceData.audio_url && (
+                      <div className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">
+                        ⚠️ {voiceData.tts_error}
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-700"
+                      onClick={() => setScriptExpanded(!scriptExpanded)}
+                    >
+                      {scriptExpanded ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                      {scriptExpanded
+                        ? "Hide Hindi script"
+                        : "Show Hindi script (for manual recording)"}
+                    </button>
+
+                    {scriptExpanded && voiceData.script_text && (
+                      <div className="rounded-lg bg-zinc-50 p-4">
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap text-zinc-700">
+                          {voiceData.script_text}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
             </Card>
 
-            {/* Action Buttons */}
             <div className="space-y-3">
               <Button
                 variant="outline"
-                className="w-full rounded-xl gap-2"
+                className="w-full gap-2 rounded-xl"
                 onClick={handleCopy}
               >
                 {copied ? (
@@ -443,7 +437,7 @@ export default function CookBriefPage() {
               </Button>
               <Button
                 variant="outline"
-                className="w-full rounded-xl gap-2"
+                className="w-full gap-2 rounded-xl"
                 onClick={() => router.push(`/shopping/${planId}`)}
               >
                 <ShoppingCart className="h-4 w-4" />
